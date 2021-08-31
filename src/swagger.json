@@ -1,75 +1,82 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.1",
     "info": {
-        "version": "1.0",
-        "title": "Chess API",
-        "description": "apprentice.io take home project."
+        "title": "Chess API Service",
+        "version": "1.0.0",
+        "description": "apprentice.io take home project",
+        "contact": {
+            "email": "laprattb@gmail.com",
+            "name": "Bradley LaPratt"
+        }
     },
+    "servers": [{
+        "url": "http://localhost:3000/"
+    }],
+    "tags": [{
+        "name": "game",
+        "description": "Game APIs"
+    }],
     "paths": {
-        "/api/game/{gid}": {
-            "get": {
-                "tags": [
-                    "game"
-                ],
-                "operationId": "Get",
-                "consumes": [],
-                "produces": [
-                    "text/plain",
-                    "application/json",
-                    "text/json"
-                ],
-                "parameters": [{
-                    "name": "gid",
-                    "in": "query",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    }
-                }],
-                "responses": {
-                    "200": {
-                        "description": "Retrieves a game state",
-                        "schema": {
-                            "uniqueItems": false,
-                            "type": "array",
-                            "items": {
-                                "type": "string"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/game": {
             "post": {
                 "tags": [
                     "game"
                 ],
-                "operationId": "Post",
-                "consumes": [
-                    "application/json-patch+json",
-                    "application/json",
-                    "text/json",
-                    "application/*+json"
-                ],
-                "produces": [],
-                "parameters": [{
-                    "name": "name",
-                    "in": "body",
+                "summary": "Creates a new game",
+                "operationId": "game-add",
+                "requestBody": {
+                    "description": "Creating a new game",
                     "required": true,
-                    "schema": {
-                        "type": "string"
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateGameSchema"
+                            }
+                        }
                     }
-                }],
+                },
                 "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "uniqueItems": true,
-                            "type": "string"
+                    "200": {
+                        "description": "Game was created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GameSchema"
+                                }
+                            }
                         }
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CreateGameSchema": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The user friendly name of the game to create",
+                        "example": "Bob and Toms Game"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
+            },
+            "GameSchema": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "The user friendly name of the game to create",
+                        "example": "Bob and Toms Game"
+                    }
+                },
+                "required": [
+                    "name"
+                ]
             }
         }
     },
