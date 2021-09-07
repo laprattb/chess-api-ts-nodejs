@@ -16,6 +16,7 @@ const router = Router();
 
 // Game routes
 router.post('/api/game', GameController.create);
+router.get('/api/game/:gameid', GameController.getGame);
 //router.post('/api/game', urlEncodedParser, GameController.create);
 //router.get('/api/game', urlEncodedParser, GameController.getState);
 

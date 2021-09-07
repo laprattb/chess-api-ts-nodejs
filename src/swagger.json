@@ -48,6 +48,36 @@
                     }
                 }
             }
+        },
+        "/api/game/{gameid}": {
+            "get": {
+                "tags": [
+                    "game"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "gameid",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": "ID of game to retrieve"
+                }],
+                "summary": "Retrieves a game and its state",
+                "operationId": "game-get",
+                "responses": {
+                    "200": {
+                        "description": "Game was created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GameSchema"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -72,6 +102,11 @@
                         "type": "string",
                         "description": "The user friendly name of the game to create",
                         "example": "Bob and Toms Game"
+                    },
+                    "current_player": {
+                        "type": "string",
+                        "description": "The player whose turn it currently is.",
+                        "example": "WHITE"
                     }
                 },
                 "required": [

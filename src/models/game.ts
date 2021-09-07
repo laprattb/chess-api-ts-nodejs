@@ -1,19 +1,31 @@
 import mongoose from 'mongoose';
+import { ChessPiece, BoardCoordinate } from './pieces';
 
 export interface IGame {
     name: string,
-    board: number[]
+    current_player: string,
+    moves_counter: number,
+    board: number[][]
 }
-interface IGameModel extends mongoose.Model<IGame> { }
 
-export enum ChessPiece {
-    KING,
-    QUEEN,
-    ROOK,
-    BISHOP,
-    KNIGHT,
-    PAWN
+export class Move {
+    original_coordinate: BoardCoordinate;
+    new_coordinate: BoardCoordinate;
+    captured_piece: ChessPiece;
+
+    constructor(ocoordinate: BoardCoordinate, ncoordinate: BoardCoordinate, captured: ChessPiece) {
+        this.original_coordinate = ocoordinate;
+        this.new_coordinate = ncoordinate;
+        this.captured_piece = captured;
+    }
 }
+
+export enum Player {
+    WHITE = "WHITE",
+    BLACK = "BLACK"
+}
+
+interface IGameModel extends mongoose.Model<IGame> { }
 
 const schema = new mongoose.Schema<IGame>({
     name: {
@@ -21,26 +33,20 @@ const schema = new mongoose.Schema<IGame>({
         required: true,
         index: true
     },
-    board: {
-        type: [Number],
-        required: true,
+    current_player: {
+        type: String,
+        required: false,
+        default: "WHITE",
         index: false
-    }
+    },
+    moves_counter: {
+        type: Number,
+        required: false,
+        default: 1,
+        index: false
+    },
+    board: [[Number]]
 });
 
 const Game: IGameModel = mongoose.model<IGame, IGameModel>('Game', schema);
 export default Game;
-
-export const FillBoard = (game: IGameModel): IGameModel => {
-    return game;
-}
-
-// export default class Game extends mongoose.Model implements IGame {
-//     name: string;
-//     board: number[];
-
-//     constructor(name: string) {
-//         this.name = name;
-//         this.board = new Array<number>(64);
-//     }
-// }
