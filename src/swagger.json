@@ -78,6 +78,62 @@
                     }
                 }
             }
+        },
+        "/api/game/{gameid}/move": {
+            "get": {
+                "tags": [
+                    "game"
+                ],
+                "parameters": [{
+                        "in": "path",
+                        "name": "gameid",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true,
+                        "description": "ID of game to move a piece on"
+                    },
+                    {
+                        "in": "query",
+                        "name": "row",
+                        "schema": {
+                            "type": "number",
+                            "default": "0"
+                        },
+                        "description": "Row coordinate of the piece you wish query potential moves for"
+                    },
+                    {
+                        "in": "query",
+                        "name": "column",
+                        "schema": {
+                            "type": "string",
+                            "default": "hitchhiker"
+                        },
+                        "description": "Column coordinate of the piece you wish to query potential moves for"
+                    }
+                ],
+                "summary": "Gets a list of viable moves for a piece on the game",
+                "operationId": "moves-get",
+                "responses": {
+                    "200": {
+                        "description": "Moves were calculated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "moves": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/MoveSchema"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -112,6 +168,10 @@
                 "required": [
                     "name"
                 ]
+            },
+            "MoveSchema": {
+                "type": "object",
+                "properties": {}
             }
         }
     },

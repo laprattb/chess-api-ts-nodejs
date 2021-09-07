@@ -13,7 +13,7 @@ export const createGameSchema = Joi.object().keys({
 });
 
 // Create a new game
-export const create: RequestHandler = async (req: Request<{}, {}, ICreateBody>, res) => {
+const create: RequestHandler = async (req: Request<{}, {}, ICreateBody>, res) => {
     const { name } = req.body;
     console.log(req.body);
 
@@ -25,28 +25,6 @@ export const create: RequestHandler = async (req: Request<{}, {}, ICreateBody>, 
         message: 'Saved',
         game: game.toJSON()
     });
-};
-
-// Gets the game by ID including state & current player
-export const getGame: RequestHandler = async (req: Request, res) => {
-    const { gameid } = req.params;
-
-    let game = await Game.findById(gameid);
-    if (!game) {
-        return res.status(404).send({
-            error: 'Game not found'
-        });
-    }
-
-    res.status(200).send({
-        game: game.toJSON()
-    });
-};
-
-export const getMoves = async (req: Request, res) => {
-    const { gameid, coord } = req.params;
-
-    res.status(200)
 };
 
 export default requestMiddleware(create, { validation: { body: createGameSchema } });

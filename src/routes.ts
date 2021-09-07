@@ -3,8 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import apiSpec from './swagger.json';
 import bodyParser from 'body-parser'
 
-import * as GameController from './controllers/game';
-import * as MoveController from './controllers/move';
+import * as GameController from './controllers';
 
 const swaggerUiOptions = {
     //customCss: '.swagger-ui .topbar { display: none }'
@@ -17,6 +16,7 @@ const router = Router();
 // Game routes
 router.post('/api/game', GameController.create);
 router.get('/api/game/:gameid', GameController.getGame);
+router.get('/api/game/:gameid/move', GameController.getMoves);
 //router.post('/api/game', urlEncodedParser, GameController.create);
 //router.get('/api/game', urlEncodedParser, GameController.getState);
 

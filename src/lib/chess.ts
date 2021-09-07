@@ -28,6 +28,9 @@ export function ResetBoard<T extends IGame>(game: T): T {
 export function GetMoves<T extends IGame>(game: T, coordinate: BoardCoordinate): Move[] {
     const { row, column } = coordinate;
 
+    if (row < 0 || row > 8) throw new Error("Invalid row");
+    if (column < 0 || column > 8) throw new Error("Invalid column");
+
     switch (game.board[row][column]) {
         case ChessPiece.W_PAWN:
         case ChessPiece.B_PAWN: {

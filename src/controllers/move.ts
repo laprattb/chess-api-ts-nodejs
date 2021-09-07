@@ -1,9 +1,20 @@
-import { RequestHandler } from 'express';
+import { Request, RequestHandler, Response } from 'express';
+import Game, { Move } from '../models/game';
+import { GetMoves } from '../lib/chess';
+import { BoardCoordinate } from '../models/pieces';
+import Joi from '@hapi/joi';
+import requestMiddleware from '../middleware/request-handler';
 
-export const getMoves: RequestHandler = async (req, res, next) => {
-    res.status(501).send();
+interface IMoveBody {
+
+}
+
+export const moveSchema = Joi.object().keys({
+});
+
+// Create a new game
+const move: RequestHandler = async (req: Request<{}, {}, IMoveBody>, res) => {
+    res.status(500).send();
 };
 
-export const move: RequestHandler = async (req, res, next) => {
-    res.status(501).send();
-};
+export default requestMiddleware(move, { validation: { body: moveSchema } });
