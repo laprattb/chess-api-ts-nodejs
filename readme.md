@@ -35,6 +35,7 @@ B_Q = Black Queen
 B_P = Black Pawn
 
 |   | 0   | 1    | 2   | 3   | 4   | 5   | 6    | 7   |
+| - | --- | ---- | --- | --- | --- | --- | ---- | --- |
 | 0 | W_R | W_KN | W_B | W_K | W_Q | W_B | W_KN | W_R |
 | 1 | W_P | W_P  | W_P | W_P | W_P | W_P | W_P  | W_P |
 | 2 |  -  |   -  |  -  |  -  |  -  |  -  |  -   |  -  |
