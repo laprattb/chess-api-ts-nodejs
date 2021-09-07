@@ -22,10 +22,11 @@ export class Move {
 
 export enum Player {
     WHITE = "WHITE",
-    BLACK = "BLACK"
+    BLACK = "BLACK",
+    NONE = "NONE"
 }
 
-interface IGameModel extends mongoose.Model<IGame> { }
+export interface IGameModel extends mongoose.Model<IGame> { }
 
 const schema = new mongoose.Schema<IGame>({
     name: {

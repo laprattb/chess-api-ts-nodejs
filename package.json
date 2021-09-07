@@ -4,7 +4,7 @@
     "description": "",
     "main": "./dist/server.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "mocha ./dist/test/**/*.js",
         "build": "tsc --project ./tsconfig.json",
         "start": "node ./dist/server.js",
         "debug": "node --nolazy --inspect=5858 ./dist/server.js"

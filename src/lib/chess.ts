@@ -48,7 +48,7 @@ function GetPawnMoves<T extends IGame>(game: T, coordinate: BoardCoordinate): Mo
     let ret: Move[] = [];
 
     const getDiagCoords = (): BoardCoordinate[] => {
-        if (player = Player.WHITE) {
+        if (player == Player.WHITE) {
             return [
                 { row: row + 1, column: column - 1 }, { row: row + 1, column: column + 1 }
             ];
@@ -62,7 +62,7 @@ function GetPawnMoves<T extends IGame>(game: T, coordinate: BoardCoordinate): Mo
     const getStraightCoords = (): BoardCoordinate[] => {
         let ret: BoardCoordinate[] = [];
 
-        if (player = Player.WHITE) {
+        if (player == Player.WHITE) {
             ret.push({ row: row + 1, column: column });
 
             // Double move case
@@ -86,7 +86,9 @@ function GetPawnMoves<T extends IGame>(game: T, coordinate: BoardCoordinate): Mo
     for (let i = 0; i < dcors.length; i++) {
         let dc = dcors[i];
         if (dc.row > 0 && dc.row < 8 && dc.column > 0 && dc.column < 8) {
-            ret.push(new Move(coordinate, dc, game.board[dc.row][dc.column]));
+            if (getPlayerColor(game.board[dc.row][dc.column]) != player) {
+                ret.push(new Move(coordinate, dc, game.board[dc.row][dc.column]));
+            }
         }
     }
 
@@ -95,11 +97,35 @@ function GetPawnMoves<T extends IGame>(game: T, coordinate: BoardCoordinate): Mo
     for (let i = 0; i < scors.length; i++) {
         let dc = scors[i];
         if (dc.row > 0 && dc.row < 8 && game.board[dc.row][dc.column] == ChessPiece.EMPTY) {
-            ret.push(new Move(coordinate, dc, game.board[dc.row][dc.column]));
+            if (game.board[dc.row][dc.column] == ChessPiece.EMPTY) {
+                ret.push(new Move(coordinate, dc, game.board[dc.row][dc.column]));
+            }
         }
     }
 
     return ret;
+}
+
+function getPlayerColor(piece: ChessPiece): Player {
+    switch (piece) {
+        case ChessPiece.W_KING:
+        case ChessPiece.W_QUEEN:
+        case ChessPiece.W_ROOK:
+        case ChessPiece.W_BISHOP:
+        case ChessPiece.W_KNIGHT:
+        case ChessPiece.W_PAWN:
+            return Player.WHITE;
+        case ChessPiece.B_KING:
+        case ChessPiece.B_QUEEN:
+        case ChessPiece.B_ROOK:
+        case ChessPiece.B_BISHOP:
+        case ChessPiece.B_KNIGHT:
+        case ChessPiece.B_PAWN:
+            return Player.BLACK;
+        default:
+            return Player.NONE;
+
+    }
 }
 
 // Sets a row as a back row
