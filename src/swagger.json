@@ -106,8 +106,8 @@
                         "in": "query",
                         "name": "column",
                         "schema": {
-                            "type": "string",
-                            "default": "hitchhiker"
+                            "type": "number",
+                            "default": "0"
                         },
                         "description": "Column coordinate of the piece you wish to query potential moves for"
                     }

@@ -23,6 +23,35 @@ export function ResetBoard<T extends IGame>(game: T): T {
     return game;
 }
 
+export function MovePiece<T extends IGame>(game: T, moveFrom: BoardCoordinate, moveTo: BoardCoordinate): Move {
+    let allowedMoves: Move[] = GetMoves(game, moveFrom);
+    //let allowedCoordinates: BoardCoordinate[] = allowedMoves.map((val) => { return val.new_coordinate });
+    let ret: Move;
+
+    let mv = allowedMoves.filter(i => {
+        if (i.new_coordinate == moveTo) return i;
+    });
+
+    if (getPlayerColor(game.board[moveFrom.row][moveFrom.column]) !== game.current_player) throw new Error("Not this players turn");
+    if (mv == null || mv.length == 0) throw new Error("Move not allowed");
+
+    // Move the piece
+    let capturedPiece: ChessPiece = game.board[moveTo.row][moveTo.column];
+    game.board[moveTo.row][moveTo.column] = game.board[moveFrom.row][moveFrom.column];
+    game.board[moveFrom.row][moveFrom.column] = ChessPiece.EMPTY;
+    ret = new Move(moveFrom, moveTo, capturedPiece);
+
+    // Switch player, increment the round
+    game.moves_counter++;
+    if (game.current_player == Player.WHITE) {
+        game.current_player = Player.BLACK;
+    } else {
+        game.current_player = Player.WHITE;
+    }
+
+    return ret;
+}
+
 // Get the potential moves of a piece on the chess board. The piece in question
 // is specified by the row (r) and column (c).
 export function GetMoves<T extends IGame>(game: T, coordinate: BoardCoordinate): Move[] {

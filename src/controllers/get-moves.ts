@@ -21,9 +21,9 @@ const getMoves: RequestHandler = async (req: Request<{}, {}, {}, GetMovesQuery>,
         });
     }
 
-    let moves: Move[] = GetMoves(game, new BoardCoordinate(row, column));
+    let moves: Move[] = GetMoves(game, new BoardCoordinate(Number(row), Number(column)));
     res.status(200).send({
-        moves: game.toJSON()
+        moves: moves
     });
 };
 
