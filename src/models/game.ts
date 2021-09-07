@@ -43,7 +43,7 @@ const schema = new mongoose.Schema<IGame>({
     moves_counter: {
         type: Number,
         required: false,
-        default: 1,
+        default: 0,
         index: false
     },
     board: [[Number]]

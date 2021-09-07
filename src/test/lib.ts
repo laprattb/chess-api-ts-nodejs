@@ -1,6 +1,6 @@
 import { describe } from 'mocha';
-import Game, { Move } from '../models/game';
-import { ResetBoard, GetMoves } from '../lib/chess';
+import Game, { Move, Player } from '../models/game';
+import { ResetBoard, GetMoves, MovePiece } from '../lib/chess';
 import { expect } from 'chai';
 import { BoardCoordinate, ChessPiece, ChessPiece as CP } from '../models/pieces';
 
@@ -158,6 +158,30 @@ describe('Testing for the chess library', () => {
 
             let moves = GetMoves(game, pawnCoord);
             expect(moves).to.not.include.deep.members(disallowedMoves);
+        });
+    });
+
+    describe('Test moving pieces', () => {
+        it('should let us move a pawn to an empty space', () => {
+            const boardExpected: CP[][] = [
+                [CP.W_ROOK, CP.W_KNIGHT, CP.W_BISHOP, CP.W_KING, CP.W_QUEEN, CP.W_BISHOP, CP.W_KNIGHT, CP.W_ROOK],
+                [CP.W_PAWN, CP.W_PAWN, CP.EMPTY, CP.W_PAWN, CP.W_PAWN, CP.W_PAWN, CP.W_PAWN, CP.W_PAWN],
+                [CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY],
+                [CP.EMPTY, CP.EMPTY, CP.W_PAWN, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY],
+                [CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY],
+                [CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY, CP.EMPTY],
+                [CP.B_PAWN, CP.B_PAWN, CP.B_PAWN, CP.B_PAWN, CP.B_PAWN, CP.B_PAWN, CP.B_PAWN, CP.B_PAWN],
+                [CP.B_ROOK, CP.B_KNIGHT, CP.B_BISHOP, CP.B_KING, CP.B_QUEEN, CP.B_BISHOP, CP.B_KNIGHT, CP.B_ROOK]
+            ];
+
+            let game = ResetBoard(new Game({ name: 'Test game' }));
+            let pawnMoveFrom = new BoardCoordinate(1, 2);
+            let pawnMoveTo = new BoardCoordinate(3, 2);
+
+            let move = MovePiece(game, pawnMoveFrom, pawnMoveTo);
+            expect(game.board).deep.equal(boardExpected);
+            expect(game.current_player).to.equal(Player.BLACK);
+            expect(game.moves_counter).to.equal(1);
         });
     });
 });

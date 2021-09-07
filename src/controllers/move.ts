@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
-import Game, { Move } from '../models/game';
+import Game, { Move, IGameModel } from '../models/game';
 import { GetMoves, MovePiece } from '../lib/chess';
 import { BoardCoordinate } from '../models/pieces';
 import Joi from '@hapi/joi';
@@ -10,16 +10,20 @@ interface IMoveBody {
     move_to: BoardCoordinate;
 }
 
-export const moveSchema = Joi.object().keys({
-    move_from: Joi.string().required(),
-    move_to: Joi.string().required()
+export const coordSchema = Joi.object().keys({
+    row: Joi.number().required(),
+    column: Joi.number().required()
+});
+
+export const moveSchema = Joi.object({
+    move_from: coordSchema,
+    move_to: coordSchema
 });
 
 // Move a piece on the game board
 const move: RequestHandler = async (req: Request<{}, {}, IMoveBody>, res) => {
     const { gameid } = (req as any).params;
     const { move_from, move_to } = req.body;
-    let ret: Move;
 
     let game = await Game.findById(gameid);
     if (!game) {
@@ -29,15 +33,23 @@ const move: RequestHandler = async (req: Request<{}, {}, IMoveBody>, res) => {
     }
 
     try {
-        ret = MovePiece(game, move_from, move_to);
+        MovePiece(game, move_from, move_to);
     } catch (err) {
         res.status(405).send({
             error: err
         });
     }
 
+    let ret = await Game.findOneAndUpdate({ id: game.id }, {
+        $set: {
+            board: game.board,
+            current_player: game.current_player,
+            moves_counter: game.moves_counter
+        }
+    }, { new: true });
+
     res.status(200).send({
-        move: ret
+        game: ret
     })
 };
 

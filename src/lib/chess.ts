@@ -12,7 +12,7 @@ export function ResetBoard<T extends IGame>(game: T): T {
     }
 
     game.current_player = Player.WHITE;
-    game.moves_counter = 1;
+    game.moves_counter = 0;
 
     // Set the initial piece placement
     SetBackRow(game, Player.WHITE);
@@ -29,7 +29,7 @@ export function MovePiece<T extends IGame>(game: T, moveFrom: BoardCoordinate, m
     let ret: Move;
 
     let mv = allowedMoves.filter(i => {
-        if (i.new_coordinate == moveTo) return i;
+        if (i.new_coordinate.row == moveTo.row && i.new_coordinate.column == moveTo.column) return i;
     });
 
     if (getPlayerColor(game.board[moveFrom.row][moveFrom.column]) !== game.current_player) throw new Error("Not this players turn");

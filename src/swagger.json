@@ -133,6 +133,45 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "game"
+                ],
+                "parameters": [{
+                    "in": "path",
+                    "name": "gameid",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "required": true,
+                    "description": "ID of game to move a piece in"
+                }],
+                "summary": "Moves a game piece",
+                "operationId": "game-move",
+                "requestBody": {
+                    "description": "Moving a game piece",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MoveSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Game was updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GameSchema"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     },
@@ -171,7 +210,40 @@
             },
             "MoveSchema": {
                 "type": "object",
-                "properties": {}
+                "properties": {
+                    "move_from": {
+                        "type": "object",
+                        "description": "The board coordinate to move a pawn from",
+                        "properties": {
+                            "row": {
+                                "type": "number",
+                                "description": "Row number",
+                                "example": 0
+                            },
+                            "column": {
+                                "type": "number",
+                                "description": "Column number",
+                                "example": 0
+                            }
+                        }
+                    },
+                    "move_to": {
+                        "type": "object",
+                        "description": "The board coordinate to move a pawn tp",
+                        "properties": {
+                            "row": {
+                                "type": "number",
+                                "description": "Row number",
+                                "example": 0
+                            },
+                            "column": {
+                                "type": "number",
+                                "description": "Column number",
+                                "example": 0
+                            }
+                        }
+                    }
+                }
             }
         }
     },
